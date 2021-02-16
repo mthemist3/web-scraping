@@ -4,27 +4,7 @@
 from splinter import Browser
 from bs4 import BeautifulSoup as bs
 import pandas as pd
-import datetime as dt
 
-def scrape_all():
-    # Initiate headless driver for deployment
-    browser = Browser("chrome", executable_path="chromedriver", headless=True)
-
-    news_title, news_paragraph = mars_news(browser)
-
-    # Run all scraping functions and store results in a dictionary
-    data = {
-        "news_title": news_title,
-        "news_paragraph": news_paragraph,
-        "featured_image": featured_image(browser),
-        "facts": mars_facts(),
-        "hemispheres": hemispheres(browser),
-        "last_modified": dt.datetime.now()
-    }
-
-    # Stop webdriver and return data
-    browser.quit()
-    return data
 
 def mars_news(browser):
 # Visit the website Mars_news
@@ -37,12 +17,8 @@ def mars_news(browser):
 
     # searching through different elements to find what we're looking for
     # need to get very specific to not confuse the search
-    try:
-        news_title = news_soup.find_all('div', class_='content_title')[0].text
-        news_p = news_soup.find_all('div', class_='article_teaser_body')[0].text
-
-    except AttributeError:
-        return None, None
+   news_title = news_soup.find_all('div', class_='content_title')[0].text
+   news_p = news_soup.find_all('div', class_='article_teaser_body')[0].text
 
     return news_title, news_p
     # print(news_title)
@@ -121,7 +97,6 @@ def scrape_hemisphere(html_text):
     }
 
     return hemispheres
-
 
 if __name__ == "__main__":
 
